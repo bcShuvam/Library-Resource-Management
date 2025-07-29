@@ -5,7 +5,7 @@ import '../../themes/custom_colors.dart';
 class CustomText extends StatelessWidget {
   CustomText({
     required this.text,
-    this.color = Colors.black,
+    this.color,
     this.fontWeight = FontWeight.normal,
     this.size = 16.0,
     this.textDecoration = TextDecoration.none,
@@ -20,7 +20,7 @@ class CustomText extends StatelessWidget {
   });
 
   final String text;
-  final Color color;
+  final Color? color;
   final FontWeight fontWeight;
   final double size;
   final TextDecoration textDecoration;

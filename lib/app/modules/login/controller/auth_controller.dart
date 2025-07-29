@@ -15,6 +15,7 @@ class AuthController extends ChangeNotifier {
   TextEditingController _otpController = TextEditingController();
   Map<String, dynamic> _body = {};
   final _auth = FirebaseAuth.instance;
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
 
   GlobalKey<FormState> get loginFormKey => _loginFormKey;
   TextEditingController get userEmailController => _userEmailController;
@@ -79,5 +80,15 @@ class AuthController extends ChangeNotifier {
       // return false;
     }
     return null;
+  }
+
+  Future<void> handleLogout(context) async {
+    try {
+      await _googleSignIn.signOut();
+      GoRouter.of(context).pushReplacementNamed(AppRouteName.loginRouteName);
+      print('User signed out and disconnected from Google.');
+    } catch (error) {
+      print('Logout error: $error');
+    }
   }
 }

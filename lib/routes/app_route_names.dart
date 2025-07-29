@@ -5,4 +5,5 @@ class AppRouteName {
   static const String otpVerificationRouteName = 'otp_verification';
   static const String newPasswordRouteName = 'new_password';
   static const String userDashboardRouteName = 'user_dashboard';
+  static const String userProfileRouteName = 'user_profile';
 }

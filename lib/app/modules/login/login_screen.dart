@@ -49,7 +49,6 @@ class _LoginScreenState extends State<LoginScreen> {
         child: Scaffold(
           appBar: _appBar(),
           body: _body(),
-          backgroundColor: CustomColors.primaryWhite,
         ),
       ),
     );
