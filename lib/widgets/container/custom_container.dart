@@ -35,9 +35,9 @@ class CustomContainer extends StatelessWidget {
       margin: EdgeInsets.symmetric(
           vertical: verticalMargin, horizontal: horizontalMargin),
       decoration: BoxDecoration(
-        color: Theme.of(context).brightness == Brightness.dark
+        color: color ?? (Theme.of(context).brightness == Brightness.dark
           ? const Color(0xFF1E1E1E)
-          : Colors.white,
+          : Colors.white),
         borderRadius: BorderRadius.circular(borderRadius),
         border: Border.all(
           color: borderColor ?? Colors.transparent,

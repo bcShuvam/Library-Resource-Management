@@ -45,7 +45,8 @@ class MyApp extends StatelessWidget {
               return MaterialApp.router(
                 title: 'Flutter Demo',
                 debugShowCheckedModeBanner: false,
-                themeMode: themeChangeController.themeMode,
+                // themeMode: themeChangeController.themeMode,
+                themeMode: ThemeMode.system,
                 theme: AppTheme.lightTheme,     // ✅ use custom theme
                 darkTheme: AppTheme.darkTheme, // ✅ use custom theme
                 routerConfig: appRouter,

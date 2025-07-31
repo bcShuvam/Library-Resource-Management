@@ -49,11 +49,11 @@ class ProfileScreen extends StatelessWidget {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        CustomText(text: authProvider.userName,isContent: true,),
+                        CustomText(text: authProvider.fullName,isContent: true,),
                         CustomText(
-                          text: 'ID: ${authProvider.userEmail.split('@')[0]}', isSubContent: true,
+                          text: 'ID: ${authProvider.email.split('@')[0]}', isSubContent: true,
                         ),
-                        CustomText(text: authProvider.userEmail, isSubContent: true,),
+                        CustomText(text: authProvider.email, isSubContent: true,),
                       ],
                     ),
                   ],
@@ -80,24 +80,30 @@ class ProfileScreen extends StatelessWidget {
                 imageUrl:
                     'https://cdn.pixabay.com/photo/2015/11/19/21/10/glasses-1052010_640.jpg',
               ),
-              const SizedBox(height: 16),
-              CustomElevatedButton(
-                onPressed: () {
-                  debugPrint('Logout button pressed');
-                  authProvider.handleLogout(context);
-                },
-                widget: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Icon(Icons.logout, size: 24, color: Colors.red),
-                    const SizedBox(width: 8),
-                    CustomText(
-                      text: 'Logout',
-                      isSubHeading: true,
-                      color: Colors.red,
-                    ),
-                  ],
+              // const SizedBox(height: 16),
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: CustomElevatedButton(
+                  onPressed: () {
+                    debugPrint('Logout button pressed');
+                    authProvider.handleLogout(context);
+                  },
+                  backgroundColor: Colors.transparent,
+                  borderColor: (Theme.of(context).brightness == Brightness.dark
+                      ? Colors.white : Colors.black),
+                  widget: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Icon(Icons.logout, size: 24, color: Colors.red),
+                      const SizedBox(width: 8),
+                      CustomText(
+                        text: 'Logout',
+                        isSubHeading: true,
+                        color: Colors.red,
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ],

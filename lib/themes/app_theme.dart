@@ -36,14 +36,14 @@ class AppTheme {
 
   static final ThemeData darkTheme = ThemeData(
     brightness: Brightness.dark,
-    primaryColor: Colors.tealAccent,
+    primaryColor: Colors.deepPurple,
     scaffoldBackgroundColor: Color(0xFF262626),
     textTheme: Typography.whiteCupertino,
 
     // ElevatedButton style
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
-        backgroundColor: Colors.tealAccent,
+        backgroundColor: Colors.deepPurple,
         foregroundColor: Colors.black,
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
         shape: RoundedRectangleBorder(
@@ -55,7 +55,7 @@ class AppTheme {
     // BottomNavigationBar style
     bottomNavigationBarTheme: const BottomNavigationBarThemeData(
       backgroundColor: Colors.black,
-      selectedItemColor: Colors.tealAccent,
+      selectedItemColor: Colors.deepPurple,
       unselectedItemColor: Colors.grey,
       showUnselectedLabels: true,
       type: BottomNavigationBarType.fixed,
@@ -63,7 +63,7 @@ class AppTheme {
 
     appBarTheme: const AppBarTheme(
       backgroundColor: Colors.black,
-      foregroundColor: Colors.tealAccent,
+      foregroundColor: Colors.deepPurple,
     ),
   );
 }

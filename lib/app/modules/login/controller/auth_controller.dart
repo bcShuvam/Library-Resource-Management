@@ -5,6 +5,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:library_resource_management/app/modules/login/models/auth_model.dart';
+import 'package:library_resource_management/app/modules/login/models/auth_response_model.dart';
+import 'package:library_resource_management/app/modules/login/services/login_services.dart';
+import 'package:library_resource_management/app/utils/snackbar_utils.dart';
 import 'package:library_resource_management/routes/app_route_names.dart';
 
 class AuthController extends ChangeNotifier {
@@ -16,6 +20,7 @@ class AuthController extends ChangeNotifier {
   Map<String, dynamic> _body = {};
   final _auth = FirebaseAuth.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
+  AuthResponseModel? authResponseModel;
 
   GlobalKey<FormState> get loginFormKey => _loginFormKey;
   TextEditingController get userEmailController => _userEmailController;
@@ -23,18 +28,16 @@ class AuthController extends ChangeNotifier {
   TextEditingController get otpController => _otpController;
   bool get obscure => _obscure;
 
-  String userName = '';
-  String userEmail = '';
-  String userId = '';
-  String userPhotoUrl = '';
-  int? userHashCode;
+  String fullName = '';
+  String email = '';
+  String photoUrl = '';
+  int? googleId;
 
   void setUserDetails(context, {required String name, required String email, required String id, String photoUrl = '',required int userHash}) {
-    userName = name;
-    userEmail = email;
-    userId = id;
-    userPhotoUrl = photoUrl ?? '';
-    userHashCode = userHash;
+    fullName = name;
+    this.email = email;
+    this.photoUrl = photoUrl ?? '';
+    googleId = userHash;
     // GoRouter.of(context).pushNamed(AppRouteName.userDashboardRouteName);
     notifyListeners();
   }
@@ -58,28 +61,24 @@ class AuthController extends ChangeNotifier {
       final googleAuth = await user?.authentication;
 
       final credential = GoogleAuthProvider.credential(idToken: googleAuth?.idToken, accessToken: googleAuth?.accessToken);
-
-      print('*******************************************************');
-      print(credential.idToken);
-      print(credential.accessToken);
-      print(credential.appleFullPersonName);
-      print(credential.signInMethod);
-      print(credential.secret);
-      print(credential.token);
-      print(credential.providerId);
-      print(credential.asMap());
-      print(credential.toString());
-      print('*******************************************************');
-
       return await _auth.signInWithCredential(credential);
-
-      // GoRouter.of(context).pushNamed(AppRouteName.userDashboardRouteName);
-      // return FirebaseAuth.instance.currentUser != null;
     } catch (err) {
       print("Google sign-in failed: $err");
-      // return false;
     }
     return null;
+  }
+
+  Future<void> fetchLogin(context) async {
+    final payload = AuthModel(
+      fullName: fullName,
+      email: email,
+      photoUrl: photoUrl,
+      googleId: googleId.toString(),
+    );
+    authResponseModel = await LoginServices.fetchLogin(payload);
+    SnackBarUtils.showSuccessSnackbar(context, message: authResponseModel!.message);
+    GoRouter.of(context).pushNamed(AppRouteName.userDashboardRouteName);
+    notifyListeners();
   }
 
   Future<void> handleLogout(context) async {
