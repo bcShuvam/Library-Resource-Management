@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:library_resource_management/app/modules/bottom_navigation/widget/custom_bottom_navigation.dart';
 import 'package:library_resource_management/app/modules/login/controller/auth_controller.dart';
+import 'package:library_resource_management/app/utils/snackbar_utils.dart';
 import 'package:library_resource_management/routes/app_route_names.dart';
 import 'package:library_resource_management/widgets/container/custom_container.dart';
 import 'package:library_resource_management/widgets/texts/custom_text.dart';
@@ -45,6 +46,9 @@ class DashboardScreen extends StatelessWidget {
                 width: 1,
                 borderRadius: 0,
                 applyShadow: true,
+                // color: Theme.of(context).brightness == Brightness.dark
+                //     ? const Color(0xFF1E1E1E)
+                //     : Color(0xffE8F0FE),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -54,14 +58,14 @@ class DashboardScreen extends StatelessWidget {
                       children: [
                         CustomText(
                           text:
-                              'Welcome, ${authController.userName.split(' ')[0]}',
+                              'Welcome, ${authController.fullName.split(' ')[0]}',
                           // text:
                           //     'Welcome, Muskan',
                           isSubHeading: true,
                         ),
                         CustomText(
                           text:
-                              'Student ID: ${authController.userEmail.split('@')[0]}',
+                              'Student ID: ${authController.email.split('@')[0]}',
                           // text:
                           //     'Student ID: np02cs1242323',
                           isSubContent: true,
@@ -112,8 +116,14 @@ class DashboardScreen extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    recentRequestCard(date: 'Today', title: 'Basketball', status: 'Approved'),
-                    recentRequestCard(date: 'Yesterday', title: 'Notebook', status: 'Pending'),
+                    InkWell(onTap: (){
+                      SnackBarUtils.showErrorSnackbar(context, message: 'Request already exists.');
+                    },child: recentRequestCard(date: 'Today', title: 'Basketball', status: 'Approved')),
+                    InkWell(
+                        onTap: (){
+                          SnackBarUtils.showSuccessSnackbar(context, message: 'Successfully borrowed the item. Hello world!');
+                        },
+                        child: recentRequestCard(date: 'Yesterday', title: 'Notebook', status: 'Pending')),
                   ],
                 ),
               ),

@@ -47,7 +47,7 @@ class _LoginScreenState extends State<LoginScreen> {
           }
         },
         child: Scaffold(
-          appBar: _appBar(),
+          // appBar: _appBar(),
           body: _body(),
         ),
       ),
@@ -90,24 +90,27 @@ class _LoginScreenState extends State<LoginScreen> {
         return
           Column(
             children: [
+              Image.asset('assets/images/logo.png', scale: 2.5,),
+              const SizedBox(height: 24,),
               CustomElevatedButton(
-                backgroundColor: CustomColors.primaryColor,
+                borderColor: Colors.white,
+                // backgroundColor: CustomColors.primaryColor,
                 onPressed: () async {
                   // await _authProvider.googleLogin();
                   await GoogleSignIn().signIn().then((value){
-                    setState(() {
+                    // setState(() {
                       userObj = value!;
-                      print(userObj.email);
-                      print(userObj.id);
-                      print(userObj.displayName);
-                      print(userObj.photoUrl);
-                      print(userObj.authentication.toString());
-                      print(userObj.authHeaders.toString());
-                      print(userObj.hashCode);
-                      print(userObj.runtimeType);
-                    });
+                      // print(userObj.email);
+                      // print(userObj.id);
+                      // print(userObj.displayName);
+                      // print(userObj.photoUrl);
+                      // print(userObj.authentication.toString());
+                      // print(userObj.authHeaders.toString());
+                      // print(userObj.hashCode);
+                      // print(userObj.runtimeType);
+                    // });
                     authController.setUserDetails(context, name: userObj.displayName!, email: userObj.email, id: userObj.id, photoUrl: userObj.photoUrl ?? '', userHash: userObj.hashCode);
-                    GoRouter.of(context).pushNamed(AppRouteName.userDashboardRouteName);
+                    authController.fetchLogin(context);
                   });
                 },
                 height: 50,
