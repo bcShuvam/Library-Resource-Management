@@ -67,16 +67,18 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Widget _body() {
-    return Center(
-      child: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 450),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(24),
-            child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 12, sigmaY: 12),
-              child: adminLogin(),
+    return SafeArea(
+      child: Center(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 450),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(24),
+              child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 12, sigmaY: 12),
+                child: adminLogin(),
+              ),
             ),
           ),
         ),
@@ -90,25 +92,15 @@ class _LoginScreenState extends State<LoginScreen> {
         return
           Column(
             children: [
-              Image.asset('assets/images/logo.png', scale: 2.5,),
+              ClipRRect(borderRadius: BorderRadius.circular(16),child: Image.asset('assets/icons/shan_logo.png', scale: 2.5,)),
               const SizedBox(height: 24,),
               CustomElevatedButton(
                 borderColor: Colors.white,
-                // backgroundColor: CustomColors.primaryColor,
+                backgroundColor: CustomColors.primaryColor.withOpacity(0.8),
                 onPressed: () async {
                   // await _authProvider.googleLogin();
                   await GoogleSignIn().signIn().then((value){
-                    // setState(() {
                       userObj = value!;
-                      // print(userObj.email);
-                      // print(userObj.id);
-                      // print(userObj.displayName);
-                      // print(userObj.photoUrl);
-                      // print(userObj.authentication.toString());
-                      // print(userObj.authHeaders.toString());
-                      // print(userObj.hashCode);
-                      // print(userObj.runtimeType);
-                    // });
                     authController.setUserDetails(context, name: userObj.displayName!, email: userObj.email, id: userObj.id, photoUrl: userObj.photoUrl ?? '', userHash: userObj.hashCode);
                     authController.fetchLogin(context);
                   });

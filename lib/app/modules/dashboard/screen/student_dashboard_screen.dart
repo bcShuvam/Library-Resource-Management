@@ -8,9 +8,25 @@ import 'package:library_resource_management/widgets/container/custom_container.d
 import 'package:library_resource_management/widgets/texts/custom_text.dart';
 import 'package:provider/provider.dart';
 import '../../../../widgets/appbar/custom_appbar.dart';
+import '../../profile/controller/profile_controller.dart';
 
-class DashboardScreen extends StatelessWidget {
-  const DashboardScreen({super.key});
+class StudentDashboardScreen extends StatefulWidget {
+  const StudentDashboardScreen({super.key});
+
+  @override
+  State<StudentDashboardScreen> createState() => _StudentDashboardScreenState();
+}
+
+class _StudentDashboardScreenState extends State<StudentDashboardScreen> {
+  late ProfileController profileController;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    profileController = Provider.of<ProfileController>(context, listen: false);
+    profileController.fetchProfile();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,14 +74,14 @@ class DashboardScreen extends StatelessWidget {
                       children: [
                         CustomText(
                           text:
-                              'Welcome, ${authController.fullName.split(' ')[0]}',
+                              'Welcome, ${profileController.fullName.split(' ')[0]}',
                           // text:
                           //     'Welcome, Muskan',
                           isSubHeading: true,
                         ),
                         CustomText(
                           text:
-                              'Student ID: ${authController.email.split('@')[0]}',
+                              'Student ID: ${profileController.email.split('@')[0]}',
                           // text:
                           //     'Student ID: np02cs1242323',
                           isSubContent: true,
@@ -102,7 +118,10 @@ class DashboardScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     resourceCard(icon: Icons.menu_book_outlined ,category: 'Study Materials', quantity: 20),
-                    resourceCard(icon: Icons.grid_view_outlined ,category: 'More Categories', quantity: 156),
+                    resourceCard(onTap: (){
+                      debugPrint('Tapped');
+                      GoRouter.of(context).pushNamed(AppRouteName.categoryRouteName);
+                    }, icon: Icons.grid_view_outlined ,category: 'More Categories', quantity: 156),
                   ],
                 ),
               ),
@@ -135,27 +154,31 @@ class DashboardScreen extends StatelessWidget {
   }
 
   Widget resourceCard({
+    Function()? onTap,
     IconData? icon,
     required String category,
     required int quantity,
     String? imageUrl,
   }) {
-    return CustomContainer(
-      applyShadow: true,
-      width: 0.44,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          CircleAvatar(
-            radius: 32,
-            backgroundColor: Colors.grey.shade200,
-            child: Icon(icon ?? Icons.person, color: Colors.black),
-          ),
-          SizedBox(height: 12),
-          CustomText(text: category, isContent: true),
-          SizedBox(height: 4),
-          CustomText(text: '$quantity items', isSubContent: true),
-        ],
+    return InkWell(
+      onTap: onTap,
+      child: CustomContainer(
+        applyShadow: true,
+        width: 0.44,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            CircleAvatar(
+              radius: 32,
+              backgroundColor: Colors.grey.shade200,
+              child: Icon(icon ?? Icons.person, color: Colors.black),
+            ),
+            SizedBox(height: 12),
+            CustomText(text: category, isContent: true),
+            SizedBox(height: 4),
+            CustomText(text: '$quantity items', isSubContent: true),
+          ],
+        ),
       ),
     );
   }

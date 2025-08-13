@@ -5,14 +5,14 @@ AuthResponseModel authResponseModelFromJson(String str) => AuthResponseModel.fro
 String authResponseModelToJson(AuthResponseModel data) => json.encode(data.toJson());
 
 class AuthResponseModel {
-  String message;
-  String token;
-  User user;
+  String? message;
+  String? token;
+  User? user;
 
   AuthResponseModel({
-    required this.message,
-    required this.token,
-    required this.user,
+    this.message,
+    this.token,
+    this.user,
   });
 
   factory AuthResponseModel.fromJson(Map<String, dynamic> json) => AuthResponseModel(
@@ -24,7 +24,7 @@ class AuthResponseModel {
   Map<String, dynamic> toJson() => {
     "message": message,
     "token": token,
-    "user": user.toJson(),
+    "user": user!.toJson(),
   };
 }
 

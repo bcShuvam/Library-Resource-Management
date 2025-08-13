@@ -1,6 +1,6 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 
-class FirebaseMsg{
+class FirebaseMsg {
   final msgService = FirebaseMessaging.instance;
   var token;
 
@@ -13,6 +13,4 @@ class FirebaseMsg{
   }
 }
 
-Future<void> handleNotification(RemoteMessage msg) async {
-
-}
+Future<void> handleNotification(RemoteMessage msg) async {}

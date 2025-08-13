@@ -16,6 +16,7 @@ class CustomText extends StatelessWidget {
     this.isSubContent = false,
     this.isSmallText = false,
     this.maxLines = 1,
+    this.style,
     super.key,
   });
 
@@ -31,6 +32,7 @@ class CustomText extends StatelessWidget {
   final bool isSubContent;
   final bool isSmallText;
   final int maxLines;
+  final FontStyle? style;
 
   @override
   Widget build(BuildContext context) {
@@ -43,16 +45,17 @@ class CustomText extends StatelessWidget {
         decoration: textDecoration,
         decorationColor: CustomColors.lightRed,
         decorationThickness: 2,
+        fontStyle: style,
         fontWeight: isHeading
             ? FontWeight.bold
             : isSubHeading
             ? FontWeight.w600
             : isContent
-            ? FontWeight.w500
+            ? FontWeight.w400
             : isSubContent
             ? FontWeight.normal
             : isSmallText
-            ? FontWeight.w500
+            ? FontWeight.w400
             : fontWeight,
         fontSize: isHeading
             ? 24

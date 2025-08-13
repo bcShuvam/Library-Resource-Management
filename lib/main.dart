@@ -1,11 +1,18 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:library_resource_management/app/modules/catalog/controller/catalog_controller.dart';
+import 'package:library_resource_management/app/modules/category/controller/category_controller.dart';
+import 'package:library_resource_management/app/modules/dashboard/controller/admin_controller.dart';
+import 'package:library_resource_management/app/modules/profile/controller/profile_controller.dart';
+import 'package:library_resource_management/app/modules/splash_screen/controller/splash_controller.dart';
 import 'package:library_resource_management/routes/app_route.dart';
 import 'package:library_resource_management/themes/app_theme.dart';
 import 'package:library_resource_management/themes/theme_change_controller.dart';
 import 'package:provider/provider.dart';
+import 'app/modules/borrow/controller/borrow_controller.dart';
 import 'app/modules/bottom_navigation/controller/bottom_navigation_controller.dart';
 import 'app/modules/login/controller/auth_controller.dart';
+import 'app/modules/request/controller/borrow_controller.dart';
 import 'firebase_msg.dart';
 import 'firebase_options.dart';
 
@@ -14,7 +21,7 @@ void main() async {
 
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
-  await FirebaseMsg().initFCM();
+  // await FirebaseMsg().initFCM();
 
   runApp(MyApp());
 }
@@ -35,6 +42,29 @@ class MyApp extends StatelessWidget {
               create: (context) => ThemeChangeController(),
             ),
             ChangeNotifierProvider(create: (context) => AuthController()),
+            ChangeNotifierProvider(create: (context) => ProfileController()),
+            ChangeNotifierProvider(create: (context) => CategoryController()),
+            ChangeNotifierProvider(create: (context) => BorrowRequestController()),
+            ChangeNotifierProvider(create: (context) => MyBorrowRequestController()),
+            ChangeNotifierProxyProvider<ProfileController, SplashController>(
+              create: (context) => SplashController(
+                  context.read<ProfileController>()
+              ),
+              update: (context, profile, previous) => SplashController(profile),
+            ),
+            ChangeNotifierProxyProvider<CategoryController, CatalogController>(
+              create: (context) => CatalogController(
+                  context.read<CategoryController>()
+              ),
+              update: (context, category, previous) => CatalogController(category),
+            ),
+            ChangeNotifierProxyProvider2<ProfileController,CategoryController, AdminController>(
+              create: (context) => AdminController(
+                  context.read<ProfileController>(),
+                  context.read<CategoryController>(),
+              ),
+              update: (context, profile, category, previous) => AdminController(profile,category),
+            ),
             ChangeNotifierProvider(
               create: (context) => BottomNavigationProvider(),
             ),
@@ -47,8 +77,8 @@ class MyApp extends StatelessWidget {
                 debugShowCheckedModeBanner: false,
                 // themeMode: themeChangeController.themeMode,
                 themeMode: ThemeMode.system,
-                theme: AppTheme.lightTheme,     // ✅ use custom theme
-                darkTheme: AppTheme.darkTheme, // ✅ use custom theme
+                theme: AppTheme.lightTheme,
+                darkTheme: AppTheme.darkTheme,
                 routerConfig: appRouter,
               );
             },
