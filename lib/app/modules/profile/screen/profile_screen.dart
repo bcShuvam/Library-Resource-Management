@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:library_resource_management/routes/app_route_names.dart';
+import 'package:library_resource_management/app/modules/profile/controller/profile_controller.dart';
 import 'package:library_resource_management/widgets/buttons/custom_elevated_button.dart';
 import 'package:library_resource_management/widgets/container/custom_container.dart';
 import 'package:library_resource_management/widgets/texts/custom_text.dart';
 import 'package:provider/provider.dart';
 
-import '../bottom_navigation/widget/custom_bottom_navigation.dart';
-import '../login/controller/auth_controller.dart';
+import '../../bottom_navigation/widget/custom_bottom_navigation.dart';
+import '../../login/controller/auth_controller.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -15,7 +14,11 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // backgroundColor: Colors.grey.shade100,
+      appBar: AppBar(
+        title: Text('Profile'),
+        centerTitle: true,
+        automaticallyImplyLeading: false,
+      ),
       body: body(),
       bottomNavigationBar: CustomBottomNavBar(),
     );
@@ -23,37 +26,40 @@ class ProfileScreen extends StatelessWidget {
 
   Widget body() {
     return SafeArea(
-      child: Consumer<AuthController>(
-        builder: (context, authProvider, _) {
+      child: Consumer<ProfileController>(
+        builder: (context, profileController, _) {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: Text(
-                  'Profile Screen',
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                ),
-              ),
-              const Divider(),
-              const SizedBox(height: 24),
+              // Padding(
+              //   padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              //   child: Text(
+              //     'Profile Screen',
+              //     style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              //   ),
+              // ),
+              // const Divider(),
+              const SizedBox(height: 16),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: Row(
                   children: [
                     CircleAvatar(
-                      radius: 36,
-                      child: Icon(Icons.person, size: 36),
+                      radius: 40,
+                      child: profileController.photoUrl.isNotEmpty ? Padding(
+                        padding: const EdgeInsets.all(2.0),
+                        child: ClipRRect(borderRadius: BorderRadius.circular(100),child: Image.network(profileController.photoUrl)),
+                      ) : Icon(Icons.person, size: 36),
                     ),
                     const SizedBox(width: 12),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        CustomText(text: authProvider.fullName,isContent: true,),
+                        CustomText(text: profileController.fullName,isSubHeading: true,),
                         CustomText(
-                          text: 'ID: ${authProvider.email.split('@')[0]}', isSubContent: true,
+                          text: 'ID: ${profileController.email.split('@')[0]}', isSubContent: true,
                         ),
-                        CustomText(text: authProvider.email, isSubContent: true,),
+                        CustomText(text: profileController.email, isSubContent: true,),
                       ],
                     ),
                   ],
@@ -81,30 +87,34 @@ class ProfileScreen extends StatelessWidget {
                     'https://cdn.pixabay.com/photo/2015/11/19/21/10/glasses-1052010_640.jpg',
               ),
               // const SizedBox(height: 16),
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: CustomElevatedButton(
-                  onPressed: () {
-                    debugPrint('Logout button pressed');
-                    authProvider.handleLogout(context);
-                  },
-                  backgroundColor: Colors.transparent,
-                  borderColor: (Theme.of(context).brightness == Brightness.dark
-                      ? Colors.white : Colors.black),
-                  widget: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Icon(Icons.logout, size: 24, color: Colors.red),
-                      const SizedBox(width: 8),
-                      CustomText(
-                        text: 'Logout',
-                        isSubHeading: true,
-                        color: Colors.red,
+              Consumer<AuthController>(
+                builder: (context, authController, _) {
+                  return Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: CustomElevatedButton(
+                      onPressed: () {
+                        debugPrint('Logout button pressed');
+                        authController.handleLogout(context);
+                      },
+                      backgroundColor: Colors.transparent,
+                      borderColor: (Theme.of(context).brightness == Brightness.dark
+                          ? Colors.white : Colors.black),
+                      widget: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Icon(Icons.logout, size: 24, color: Colors.red),
+                          const SizedBox(width: 8),
+                          CustomText(
+                            text: 'Logout',
+                            isSubHeading: true,
+                            color: Colors.red,
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
-                ),
+                    ),
+                  );
+                }
               ),
             ],
           );

@@ -7,6 +7,7 @@ class SnackBarUtils {
       BuildContext context, {
         String title = 'Success',
         required String message,
+        bool showOnTop = false, // New parameter
       }) {
     _showSnackbar(
       context,
@@ -15,6 +16,7 @@ class SnackBarUtils {
       backgroundColor: CustomColors.jadeGreen,
       title: title,
       message: message,
+      showOnTop: showOnTop,
     );
   }
 
@@ -22,6 +24,7 @@ class SnackBarUtils {
       BuildContext context, {
         String title = 'Error',
         required String message,
+        bool showOnTop = false, // New parameter
       }) {
     _showSnackbar(
       context,
@@ -30,6 +33,7 @@ class SnackBarUtils {
       backgroundColor: CustomColors.lightRed,
       title: title,
       message: message,
+      showOnTop: showOnTop,
     );
   }
 
@@ -40,6 +44,7 @@ class SnackBarUtils {
         required Color backgroundColor,
         required String title,
         required String message,
+        bool showOnTop = false, // New parameter
       }) {
     ScaffoldMessenger.of(context).clearSnackBars();
 
@@ -50,6 +55,13 @@ class SnackBarUtils {
           decoration: BoxDecoration(
             color: backgroundColor,
             borderRadius: BorderRadius.circular(10.0),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.2),
+                offset: const Offset(3, 3), // Shadow only bottom & right
+                blurRadius: 6,
+              ),
+            ],
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -82,10 +94,14 @@ class SnackBarUtils {
         ),
         backgroundColor: Colors.transparent,
         behavior: SnackBarBehavior.floating,
-        elevation: 4,
+        elevation: 0, // Shadow handled in BoxDecoration
         duration: const Duration(seconds: 5),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        margin: showOnTop
+            ? const EdgeInsets.only(
+            left: 16, right: 16, top: 12) // Top position
+            : const EdgeInsets.only(
+            left: 16, right: 16, bottom: 12), // Bottom position
       ),
     );
   }

@@ -49,12 +49,10 @@ class CustomTextFromField extends StatefulWidget {
   final FocusNode? focusNode; // Optional FocusNode
   final List<TextInputFormatter>? inputFormatters; // 👈 Add this
   @override
-  _CustomTextFromFieldState createState() =>
-      _CustomTextFromFieldState();
+  _CustomTextFromFieldState createState() => _CustomTextFromFieldState();
 }
 
-class _CustomTextFromFieldState
-    extends State<CustomTextFromField> {
+class _CustomTextFromFieldState extends State<CustomTextFromField> {
   // Declare a default FocusNode that will be used if none is provided
   late FocusNode _focusNode;
 
@@ -95,12 +93,19 @@ class _CustomTextFromFieldState
       //   FocusManager.instance.primaryFocus
       //       ?.unfocus(); // Dismiss the keyboard on outside tap
       // },
+      style: const TextStyle(
+        color: Colors.black, // 👈 Typed text always black
+      ),
       decoration: InputDecoration(
         filled: true,
         fillColor: widget.fillColor ?? CustomColors.primaryWhite,
         focusColor: CustomColors.primaryWhite,
         labelText: widget.labelText,
         hintText: widget.hintText,
+        labelStyle: const TextStyle(
+          color: Colors.black,
+        ), // 👈 Label always black
+        hintStyle: const TextStyle(color: Colors.black54), // 👈 Hint dark gray
         prefixIcon: widget.applyPrefix ? widget.prefixIcon : null,
         suffixIcon: widget.applySuffixIcon ? widget.suffixIcon : null,
         border: OutlineInputBorder(
